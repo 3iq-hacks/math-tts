@@ -9,6 +9,11 @@ app = Flask(__name__)
 CORS(app)
 
 
+@app.route('/')
+def index():
+    return 'Hello World!'
+
+
 @app.route('/upload-tex', methods=['POST'])
 def upload():
     file = request.files['file']
