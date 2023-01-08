@@ -15,7 +15,7 @@ jobs:
       - name: Setup Node 🌱
         uses: actions/setup-node@v3
         with:
-          node-version: "18.x"
+          node-version: "16.x"
 
       - name: Install ⬇️
         run: cd client && npm ci 
@@ -23,16 +23,12 @@ jobs:
       - name: Build 🏗️
         run: cd client && CI=false npm run build
 
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.4.1
-        with:
-          branch: gh-pages # The branch the action should deploy to.
-          folder: client/build # The folder the action should deploy.
-          # https://github.com/actions/checkout/discussions/479#discussioncomment-625461
-          git-config-name: github-actions[bot]
-          git-config-email: github-actions[bot]@users.noreply.github.com
+      - name: Create .env 📝
+        run: |
+          touch client/.env
+          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" > client/.env
 
-      - name: Deploy to Firebase
+      - name: Deploy to Firebase 🚀
         uses: w9jds/firebase-action@v11.18.0  
         with:
           args: deploy --only hosting
