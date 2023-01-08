@@ -1,10 +1,10 @@
 steps:
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/math-tts-server:$COMMIT_SHA', '.']
-  # Push the container image to Container Registry
+    args: ['build', '-t',  'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/epic-awesome-repo/math-tts-server:$COMMIT_SHA', '.']
+  # Push the container image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/math-tts-server:$COMMIT_SHA']
+    args: ['push',  'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/epic-awesome-repo/math-tts-server:$COMMIT_SHA']
   # Deploy container image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
@@ -13,9 +13,12 @@ steps:
       - 'deploy'
       - 'math-tts-server'
       - '--image'
-      - 'gcr.io/$PROJECT_ID/math-tts-server:$COMMIT_SHA'
+      - 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/epic-awesome-repo/math-tts-server:$COMMIT_SHA'
       - '--region'
-      - 'us-west1'
+      - 'northamerica-northeast2'
+      - 'managed'
+      - '--allow-unauthenticated'
+
 
 images:
-  - 'gcr.io/$PROJECT_ID/math-tts-server:$COMMIT_SHA'
+  - 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/epic-awesome-repo/math-tts-server:$COMMIT_SHA'
