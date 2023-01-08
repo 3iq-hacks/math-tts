@@ -1,8 +1,12 @@
+import os
 from fastapi import FastAPI, UploadFile, File
 import pix2tex.api.app as pix2tex
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
+# get port from environment variable, 8000 if not set
+port = os.environ.get('PORT', 8000)
+
+app = FastAPI(port=port)
 
 app.add_middleware(
     CORSMiddleware,
