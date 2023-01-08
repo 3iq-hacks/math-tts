@@ -20,5 +20,5 @@ RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g firebase-
 
 # install node_modules in mathtts-site
 # copy package.json and package-lock.json
-COPY mathtts-site/package.json mathtts-site/package-lock.json /workspaces/MathTTS/mathtts-site/
-RUN cd /workspaces/MathTTS/mathtts-site && npm install
+COPY client/package.json client/package-lock.json /workspaces/math-tts/client/
+RUN cd /workspaces/math-tts/client && npm install
