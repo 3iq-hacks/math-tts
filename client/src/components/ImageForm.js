@@ -10,9 +10,8 @@ const ViewResults = (audioURL) => {
   return (
     <div style={{justifyContent:'center', alignItems:'center', display:'flex', flexDirection:'column'}}>
       <img src="https://media.tenor.com/MjdDlyCEARcAAAAC/math-dance.gif" alt='' width='200px' style={{borderRadius: '10px'}}/>
-      <p1 style={{padding: '10px'}}>Let's listen to some math!</p1>
+      <p style={{padding: '10px'}}>Let's listen to some math!</p>
        <ReactAudioPlayer src={`${audioURL.audioURL}`} controls/>
-      <p style={{color: 'white'}}> { `${audioURL.audioURL}` } </p>
     </div>
   )
 };
@@ -56,8 +55,7 @@ class ImageForm extends React.Component {
         .then(function (response) {
             // get data
             //axios.get('http://localhost:8000/get-audio')
-            console.log(`Latex is: ${JSON.stringify(response.data)}`);
-            console.log(response.data)
+            console.log(`Latex is: ${response.data.latex}`);
             //axios.post(`S{env.REACT_APP_API_URL}/upload-tex`)
             //download("download_sus.txt", response.data.latex_file)
         })
@@ -95,7 +93,7 @@ class ImageForm extends React.Component {
         >
         <div>
         <form onSubmit={this.handleSubmit}>
-          <label for="equation">Upload:&nbsp;</label>
+          <label htmlFor="equation">Upload:&nbsp;</label>
           <input type="file"
             accept="image/png, image/jpeg, image/jpg, .tex"
             value={this.state.value}

@@ -1,1 +1,1 @@
-g_{i}=\frac{a_{i}}{b_{i}}=\Big(a_{i}\Pi_{j=1,j\neq i}^{n}b_{i}\Big)\cdot\frac{1}{s}
+g_{i}=\frac{a_{i}}{b_{i}}=\left(a_{i}\Pi_{j=1,j\neq i}^{n}b_{i}\right)\cdot\frac{1}{s}
