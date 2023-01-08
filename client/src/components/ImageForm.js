@@ -75,9 +75,8 @@ class ImageForm extends React.Component {
             style={{
                 display: "flex",
                 flexDirection:'column',
-                width: "30rem",
                 alignItems: "center",
-                backgroundColor: "#FF0FF0",
+                backgroundColor: "#000000",
                 borderWidth: "10px",
                 borderColor: "black",
                 borderRadius: "10px",
@@ -86,9 +85,9 @@ class ImageForm extends React.Component {
         >
         <div>
         <form onSubmit={this.handleSubmit}>
-          <label for="equation">Select picture:&nbsp;</label>
+          <label for="equation">Upload:&nbsp;</label>
           <input type="file"
-            accept="image/png, image/jpeg, image/jpg"
+            accept="image/png, image/jpeg, image/jpg, .tex"
             value={this.state.value}
             onChange={this.handleChange}
             name="equation" />
