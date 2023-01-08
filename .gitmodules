@@ -1,0 +1,3 @@
+[submodule "server/latex2sympy"]
+	path = server/latex2sympy
+	url = git@github.com:math-tts-org/latex2sympy.git
