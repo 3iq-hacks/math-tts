@@ -33,7 +33,7 @@ jobs:
           git-config-email: github-actions[bot]@users.noreply.github.com
 
       - name: Deploy to Firebase
-        uses: FirebaseExtended/action-hosting-deploy@v0
+        uses: w9jds/firebase-action@v1.5.0
         with:
           args: deploy --only hosting
         env:
