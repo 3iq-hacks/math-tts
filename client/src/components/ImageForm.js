@@ -50,7 +50,7 @@ class ImageForm extends React.Component {
       const formData = new FormData();
       formData.append('file', img);
       console.log(formData);
-      axios.post(`${env.REACT_APP_API_URL}/upload-img`, formData, {
+      axios.post(`${env.REACT_APP_API_URL}/upload-file`, formData, {
         headers: {'Content-Type': 'multipart/form-data' }
       })
         .then(function (response) {

@@ -1,0 +1,121 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsfonts, mathtools}
+\usepackage[bottom=1in, top=0.5in]{geometry}
+\usepackage{setspace}
+\newcommand{\pmat}[4]{\begin{pmatrix} #1 & #2 \\ #3 & #4\end{pmatrix}}
+\newcommand{\R}[0]{\mathbb{R}}
+
+\title{MATH 225 Assignment 7}
+\author{Curtis Kan}
+\date{2022-03-17}
+
+\setstretch{1.25}
+\begin{document}
+
+\maketitle
+
+\section*{Question 1}
+\subsection*{1.}
+A. T(f(X)) = $aX^2 + bX + c$ = $a(2X + 1)^2 + b(2X + 1) + c$ = $a(4X^2 + 4X + 1) + 2bX + b + c$ \\ = $(4a)X^2 + (4a + 2b)X + (a + b + c)$
+\\$aX^2 + bX + c = (4a)X^2 + (4a + 2b)X + (a + b + c)$
+\\Let's use the standard basis for $\R[X]_{deg \leq 2}$ and make a matrix for T:
+\\$T(1) = 1
+\\ = 1(1) + 0(X) + 0(X^2)$ 
+\\$T(X) = 2X + 1
+\\ = 1(1) + 2(X) + 0(X^2)$
+\\$T(X^2) = 4X^2 + 4X + 1
+\\ = 1(1) + 4(X) + 4(X^2)$
+\\[10px]
+$[T]_e = \begin{bmatrix}
+1 & 1 & 1 \\
+0 & 2 & 4 \\
+0 & 0 & 4\\
+\end{bmatrix}$
+\\$\lambda_1 = 1, \lambda_2 = 2, \lambda_3 = 4$ geometric multiplicity = 3, algebraic multiplicity  = 3
+\\B. $\lambda_1 = (1, 2, 1), \lambda_2 = (1, 1, 0), \lambda_3 = (1, 0, 0)$
+\\C. Diagonalizable since $geo = alg$
+\\D. $B = \{1, 1 + X, 1 + 2X + X^2\}$
+\\$[T]_B = \begin{bmatrix}
+1 & 1 & 0 \\
+0 & 2 & 0 \\
+0 & 0 & 1\\
+\end{bmatrix}$
+\subsection*{2.}
+A. T(f(X)) = $aX^2 + bX + c$
+\\f(X) = $a(X + 1)^2 + b(X + 1) + c$ = $a(X^2 + 2X + 1) + bX + b + c$ = $(a)X^2 + (2a + b)X + (a + b + c)$
+\\$aX^2 + bX + c$ = $(a)X^2 + (2a + b)X + (a + b + c)$
+\\Let's use the standard basis for $\R[X]_{deg \leq 2}$ and make a matrix for T:
+\\$T(1) = 1
+\\ = 1(1) + 0(X) + 0(X^2)$ 
+\\$T(X) = X + 1
+\\ = 1(1) + 1(X) + 0(X^2)$
+\\$T(X^2) = X^2 + 2X + 1
+\\ = 1(1) + 2(X) + 1(X^2)$
+\\[10px]
+$[T]_e = \begin{bmatrix}
+1 & 1 & 1 \\
+0 & 1 & 2 \\
+0 & 0 & 1\\
+\end{bmatrix}$
+\\$\lambda_1 = \lambda_2 = \lambda_3 = 1$ geometric multiplicity = 1, algebraic multiplicity  = 3
+\\B. $\lambda_1 = (1, 0, 0)$
+\\C. Not diagonalizable since $geo \neq alg$
+\\D. Not diagonalizable so can't find.
+\subsection*{3.}
+A.$T = \begin{bmatrix}
+1 & 1 & 0 & 0\\
+0 & 2 & 0 & 0\\
+0 & 0 & 0 & 1\\
+0 & 0 & -1 & 0
+\end{bmatrix}$
+\\B. $\lambda_1 = 2, \lambda_2 = 1$ geometric multiplicity = 4 algebraic multiplicity = 2
+\\C. Not diagonalizable since there are some complex eigenvalues but aren't included.
+\\D. Not diagonalizable so can't find.
+
+\subsection*{4.}
+A.$T = \begin{bmatrix}
+1 & -1 & 0 & 0\\
+0 & 2 & 0 & 0\\
+0 & 0 & 0 & -1\\
+0 & 0 & 1 & 0
+\end{bmatrix}$
+\\B.$\lambda_1 = -i, \lambda_2 = i$  geometric multiplicity = 2 algebraic multiplicity = 2
+\\C. Diagonalizable since $geo = alg$
+\\D. $B = \begin{bmatrix}
+0 & 0 \\
+0 & 0 \\
+-i & i \\
+1 & 1
+\end{bmatrix}$
+\pagebreak
+\section*{Question 2}
+\subsection*{1.}
+Suppose there is an arbitrary vector $v \in V$ such that $v \in T_{\lambda_1}$ and $v \in T_{\lambda_2}$ 
+\\(v is contained in the eigenspace of $\lambda_1$ and $\lambda_2$), then we know that \\ $T(v) = \lambda_1 \cdot v$ and $T(v) = \lambda_2 \cdot v$ by Definition 14.5. By combining these equations through $T(v)$, we get:
+\\$\lambda_1 \cdot v = \lambda_2 \cdot v$. 
+\\Rearranging, we get:
+\\$\lambda_2 \cdot v - \lambda_1 \cdot v = 0 \rightarrow (\lambda_2 - \lambda_1) \cdot v = 0$. 
+\\We know that the eigenvalues $\lambda_1$ and $\lambda_2$ are 2 numbers that are distinct, thus $\lambda_2 - \lambda_1 \neq 0$. So we must have $v = 0$. Hence, the only vector contained in $T_{\lambda_1}$ and $T_{\lambda_2}$ is the zero vector.
+\subsection*{2.}
+We want to show the set $\{v_1, ..., v_r, w_1, ... , w_s\}$ is linearly independent. Let's show the only solution: \\ $c_1v_1 + ... + c_rv_r + d_1w_1 + ... + d_sw_s = 0$ is when $c_1 = ... = c_r = d_1 = ... = d_s = 0$.
+\\We know $T(v_1) = \lambda_1v_1, ... , T(v_r)$ = $\lambda_1v_r$ since $\{v_1, ..., v_r\}$ is a subset of $T_{\lambda_1}$.
+\\We know $T(w_1) = \lambda_2w_1, ... , T(w_s)$ = $\lambda_2w_s$ since $\{w_1, ..., w_s\}$ is a subset of $T_{\lambda_2}$.
+\\[5px]Equation 1: take 0 = T(0) = T($c_1v_1 + ... + c_rv_r + d_1w_1 + ... + d_sw_s$) \\ = $\lambda_1c_1v_1 + ... + \lambda_1c_rv_r + \lambda_2d_1w_1 + ... + \lambda_2d_sw_s$ = 0. 
+\\[5px]Equation 2: take the original equation and multiply by $\lambda_1$: $\lambda_1c_1v_1 + ... + \lambda_1c_rv_r + \lambda_1d_1w_1 + ... + \lambda_1d_sw_s$ = 0.
+\\Subtract Equation 1 - Equation 2 (all v terms cancel): ($\lambda_2 - \lambda_1$)$d_1w_1$ + ... + ($\lambda_2 - \lambda_1$)$d_sw_s$ = 0.
+\\$\rightarrow (\lambda_2 - \lambda_1)(d_1w_1 + ... + d_sw_s)$ = 0.
+\\We know from part 1 that $\lambda_2 - \lambda_1 \neq 0$, so $(d_1w_1 + ... + d_sw_s) = 0$. $\{w_1, ..., w_s\}$ is linearly independent, thus by definition $d_1 = ... = d_s$ = 0. 
+\\[5px]We can use the same method with $c_1, ..., c_r$ by modifying Equation 2 to multiply by $\lambda_2$:
+\\$\lambda_2c_1v_1 + ... + \lambda_2c_rv_r + \lambda_2d_1w_1 + ... + \lambda_2d_sw_s$ = 0.
+\\Subtract Equation 2 - Equation 1 (all w terms cancel): ($\lambda_2 - \lambda_1$)$c_1v_1$ + ... + ($\lambda_2 - \lambda_1$)$c_rv_r$ = 0.
+\\$\rightarrow (\lambda_2 - \lambda_1)(c_1v_1 + ... + c_rv_r)$ = 0.
+\\We know from part 1 that $\lambda_2 - \lambda_1 \neq 0$, so $(c_1v_1 + ... + c_rv_r) = 0$. $\{v_1, ..., v_r\}$ is linearly independent, thus by definition $c_1 = ... = c_r$ = 0. 
+\\We proved that $c_1 = ... = c_r = d_1 = ... = d_s = 0$. Thus  $\{v_1, ..., v_r, w_1, ... , w_s\}$ is a linearly independent subset of V.
+\pagebreak
+\section*{Question 3}
+By Definition 14.5, we know the geometric multiplicity of $\lambda$ is the dimension of eigenspace $T_\lambda$. If the eigenspace agrees with range(T), that must mean geometric multiplicity $\lambda$ = dim(T), which by definition means there can be no other eigenvalues. Hence, $\lambda$ is the only eigenvalue. By Theorem 15.3, the sum of geometric multiplities is just $\lambda$, which is dim(T), so therefore T is diagonalizable.
+\\Proof by intimidation.
+
+
+\end{document}
