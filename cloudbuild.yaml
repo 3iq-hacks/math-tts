@@ -1,24 +1,40 @@
 steps:
+  # Retrieve from cache
+  # https://depot.dev/blog/docker-layer-caching-in-google-cloud-build
+  # - name: gcr.io/cloud-builders/docker
+  #   entrypoint: bash
+  #   args:
+  #     - -c
+  #     - docker pull us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:latest || exit 0
+
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t',  'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/epic-awesome-repo/math-tts-server:$COMMIT_SHA', '.']
-  # Push the container image to Artifact Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push',  'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/epic-awesome-repo/math-tts-server:$COMMIT_SHA']
-  # Deploy container image to Cloud Run
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: gcloud
-    args:
-      - 'run'
-      - 'deploy'
-      - 'math-tts-server'
-      - '--image'
-      - 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/epic-awesome-repo/math-tts-server:$COMMIT_SHA'
-      - '--region'
-      - 'northamerica-northeast2'
-      - 'managed'
-      - '--allow-unauthenticated'
+    args: 
+      - 'build'
+      - '-t'
+      - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:$COMMIT_SHA'
+      - '-t'
+      - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:latest'
+      - .
+      
+  # # Push the container image to Artifact Registry
+  # - name: 'gcr.io/cloud-builders/docker'
+  #   args: ['push',  'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/epic-awesome-repo/math-tts-server:$COMMIT_SHA']
+  # # Deploy container image to Cloud Run
+  # - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  #   entrypoint: gcloud
+  #   args:
+  #     - 'run'
+  #     - 'deploy'
+  #     - 'math-tts-server'
+  #     - '--image'
+  #     - 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/epic-awesome-repo/math-tts-server:$COMMIT_SHA'
+  #     - '--region'
+  #     - 'northamerica-northeast2'
+  #     - 'managed'
+  #     - '--allow-unauthenticated'
 
 
 images:
-  - 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/epic-awesome-repo/math-tts-server:$COMMIT_SHA'
+  - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:$COMMIT_SHA'
+  - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:latest'
