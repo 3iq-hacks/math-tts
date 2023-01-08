@@ -20,4 +20,11 @@ RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requ
 COPY client/package.json client/package-lock.json /workspaces/math-tts/client/
 RUN cd /workspaces/math-tts/client && npm install
 
+# based on architecture, download pandoc
+RUN if [ "$(uname -m)" = "x86_64" ]; then \
+    wget https://github.com/jgm/pandoc/releases/download/2.19.2/pandoc-2.19.2-1-amd64.deb && dpkg -i pandoc-2.19.2-1-amd64.deb \
+    elif [ "$(uname -m)" = "aarch64" ]; then \
+    wget https://github.com/jgm/pandoc/releases/download/2.19.2/pandoc-2.19.2-1-arm64.deb && dpkg -i pandoc-2.19.2-1-arm64.deb \
+    fi
+
 COPY . .
