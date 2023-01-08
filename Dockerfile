@@ -6,6 +6,5 @@ RUN pip install -r requirements.txt
 
 COPY server/ .
 
+ARG PORT=8000
 CMD ["uvicorn", "main:app", "--host" ]
-
-EXPOSE 8000
