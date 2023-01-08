@@ -31,6 +31,7 @@ jobs:
         id: auth
         uses: 'google-github-actions/auth@v1'
         with:
+          token_format: 'access_token'
           # these were set up using the following guide: https://github.com/google-github-actions/auth#setting-up-workload-identity-federation
           # no idea how this is better 
           workload_identity_provider: '${{ secrets.WIF_PROVIDER }}' # e.g. - projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider
