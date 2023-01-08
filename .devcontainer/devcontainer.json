@@ -31,6 +31,16 @@
   "customizations": {
     "vscode": {
       "extensions": ["GitHub.copilot"]
+    },
+    "codespaces": {
+      "repositories": {
+        // https://github.com/orgs/community/discussions/25429
+        "math-tts-org/latex2sympy": {
+          "permissions": {
+            "contents": "read"
+          }
+        }
+      }
     }
   },
   "features": {
