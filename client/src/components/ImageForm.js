@@ -5,13 +5,14 @@ import ReactAudioPlayer from "react-audio-player";
 import Card from 'react-bootstrap/Card';
 import env from 'react-dotenv';
 
-const ViewResults = () => {
-
+const ViewResults = (audioURL) => {
+  
   return (
     <div style={{justifyContent:'center', alignItems:'center', display:'flex', flexDirection:'column'}}>
       <img src="https://media.tenor.com/MjdDlyCEARcAAAAC/math-dance.gif" alt='' width='200px' style={{borderRadius: '10px'}}/>
       <p1 style={{padding: '10px'}}>Let's listen to some math!</p1>
-      <ReactAudioPlayer src={audioURL} controls/>
+       <ReactAudioPlayer src={`${audioURL.audioURL}`} controls/>
+      <p style={{color: 'white'}}> { `${audioURL.audioURL}` } </p>
     </div>
   )
 };
@@ -57,6 +58,7 @@ class ImageForm extends React.Component {
             //axios.get('http://localhost:8000/get-audio')
             console.log(`Latex is: ${JSON.stringify(response.data)}`);
             console.log(response.data)
+            //axios.post(`S{env.REACT_APP_API_URL}/upload-tex`)
             //download("download_sus.txt", response.data.latex_file)
         })
         .catch(function (error) {
@@ -99,7 +101,7 @@ class ImageForm extends React.Component {
             value={this.state.value}
             onChange={this.handleChange}
             name="equation" />
-          <input type="submit" value="Upload File" />
+          <input type="submit" value="Upload File" style={{padding: '10px', background: 'lime', borderRadius: '10px'}}/>
         </form>
         </div>
         <div>
@@ -107,7 +109,7 @@ class ImageForm extends React.Component {
         </div>
         <div>
           {this.state.submitted && (
-              <ViewResults/>
+              <ViewResults audioURL="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"/>
           )}
       </div>
       </Card>
