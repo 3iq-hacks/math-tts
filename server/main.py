@@ -1,7 +1,16 @@
 from fastapi import FastAPI, UploadFile, File
 import pix2tex.api.app as pix2tex
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
