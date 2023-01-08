@@ -30,7 +30,10 @@
 
   "customizations": {
     "vscode": {
-      "extensions": ["GitHub.copilot"]
+      "extensions": [
+		"GitHub.copilot",
+		"ms-vsliveshare.vsliveshare"
+	]
     }
   },
   "features": {
