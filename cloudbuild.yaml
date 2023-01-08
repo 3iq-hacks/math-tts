@@ -1,0 +1,60 @@
+steps:
+  # first, make sure we get the submodules
+  # https://github.com/GoogleCloudPlatform/cloud-builders/issues/435
+  - name: gcr.io/cloud-builders/git
+    args: ['submodule', 'update', '--init', '--recursive']
+
+  # Retrieve from cache
+  # https://depot.dev/blog/docker-layer-caching-in-google-cloud-build
+  - name: gcr.io/cloud-builders/docker
+    entrypoint: bash
+    args:
+      - -c
+      - docker pull us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:latest || exit 0
+
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'build'
+      - '-t'
+      - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:$COMMIT_SHA'
+      - '-t'
+      - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:latest'
+      - --cache-from
+      - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:latest'
+      - .
+  
+  # Push the container image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'push'
+      - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:$COMMIT_SHA'
+
+  # Deploy container image to Cloud Run
+  # https://cloud.google.com/sdk/gcloud/reference/run/deploy
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'math-tts-server'
+      - '--image'
+      - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:$COMMIT_SHA'
+      - '--region'
+      - 'us-west1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--port'
+      - '8000'
+      - '--memory' # beefier system to execute OCR 
+      - '8Gi'
+      - '--cpu'
+      - '4'
+      - '--execution-environment'
+      - 'gen2' # Network file system support, full Linux compatibility, faster CPU and network performance. 
+
+
+images:
+  - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:$COMMIT_SHA'
+  - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:latest'

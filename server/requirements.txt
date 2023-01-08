@@ -91,3 +91,5 @@ websockets==10.4
 Werkzeug==2.2.2
 x-transformers==0.15.0
 zipp==3.11.0
+antlr4-python3-runtime==4.7.2
+sympy==1.4

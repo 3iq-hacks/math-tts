@@ -12,7 +12,7 @@
       // Use -bullseye variants on local on arm64/Apple Silicon.
       "VARIANT": "3.9-bullseye",
       // Options
-      "NODE_VERSION": "16"
+      "NODE_VERSION": "18"
     }
   },
 
@@ -30,11 +30,16 @@
 
   "customizations": {
     "vscode": {
-      "extensions": ["GitHub.copilot"]
+      "extensions": [
+		"GitHub.copilot",
+		"ms-vsliveshare.vsliveshare"
+	]
     }
   },
   "features": {
-    "ghcr.io/devcontainers/features/common-utils:2": {}
+	"ghcr.io/devcontainers/features/common-utils:2": {},
+	"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
+	"ghcr.io/devcontainers/features/github-cli:1": {}
   }
 
   // Configure tool-specific properties.
