@@ -1,7 +1,18 @@
 import React from 'react';
 import axios from 'axios';
 import FormData from 'form-data';
-// import styled from "styled-components";
+import ReactAudioPlayer from "react-audio-player";
+import Card from 'react-bootstrap/Card';
+
+const ViewResults = () => {
+
+  return (
+    <div style={{justifyContent:'center', alignItems:'center', display:'flex', flexDirection:'column'}}>
+      <p1>Let's listen to some math!</p1>
+      <ReactAudioPlayer src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" controls/>
+    </div>
+  )
+};
 
 class ImageForm extends React.Component {
     constructor(props) {
@@ -15,13 +26,14 @@ class ImageForm extends React.Component {
     }
   
     handleChange(event) {
+      event.preventDefault();
         if (event.target.files && event.target.files[0]) {
             const file = event.target.files[0];
             console.log('Got file:', file);
-            this.setState({imageUrl: URL.createObjectURL(file), image: file});
+            this.setState({imageURL: URL.createObjectURL(file), image: file});
         } else {
             console.log('No file selected')
-            this.setState({imageUrl: '', image: null});
+            this.setState({imageURL: '', image: null});
         }
         this.setState({value: event.target.value});
     }
@@ -58,6 +70,19 @@ class ImageForm extends React.Component {
   
     render() {
       return (
+      <div>
+        <Card
+            style={{
+                display: "flex",
+                width: "30rem",
+                alignItems: "center",
+                backgroundColor: "#000000",
+                borderWidth: 4,
+                borderColor: "black",
+                borderRadius: "10px",
+                padding: "20px"
+            }}
+        >
         <div>
         <form onSubmit={this.handleSubmit}>
           <label for="equation">Select picture:&nbsp;</label>
@@ -67,15 +92,18 @@ class ImageForm extends React.Component {
             onChange={this.handleChange}
             name="equation" />
           <input type="submit" value="Upload File" />
-          <img id="target" alt='' src={this.state.imageUrl} width="300px"/>
         </form>
-        {this.state.submitted && (
-            <ViewResults
-                audioInfo={state.audioInfo}
-                boomedBlobURL={state.boomedBlobURL}
-            />
-        )}
+        </div>
+        <div>
+          <img id="target" alt='' src={this.state.imageURL} width="300px"/>
+        </div>
+        <div>
+          {this.state.submitted && (
+              <ViewResults/>
+          )}
       </div>
+      </Card>
+    </div>
       );
     }
   }
