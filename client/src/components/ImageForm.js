@@ -1,10 +1,12 @@
 import React from 'react';
 import axios from 'axios';
+import FormData from 'form-data';
+import styled from "styled-components";
 
 class ImageForm extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {image: null, value: ''};
+      this.state = {image: null, imageName: '', value: ''};
   
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -12,35 +14,42 @@ class ImageForm extends React.Component {
   
     handleChange(event) {
         if (event.target.files && event.target.files[0]) {
-            this.setState({image: URL.createObjectURL(event.target.files[0])});
+            this.setState({image: URL.createObjectURL(event.target.files[0]), imageName: event.target.files[0].name});
           }
       this.setState({value: event.target.value});
     }
   
     handleSubmit(event) {
-      alert('A file was submitted: ' + this.state.value);
-      this.setState({image: null});
       event.preventDefault();
       
-      axios.post('http://localhost:5000/upload', {
-        image: this.state.value
-        `${process.env}`.REACT_APP_API_URL
+      // https://masteringjs.io/tutorials/axios/axios-multi-form-data
+      // uploading a form requires formData
+      const formData = new FormData();
+      formData.append(this.state.imageName, this.state.image);
+      console.log(formData);
+      axios.post('http://localhost:8000/upload-img', formData, {
+        headers: formData.getHeaders()
       })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      }
-      );
+        .then(function (response) {
+            console.log(`Latex is: ${response}`);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    
+      this.setState({image: null});
+
+    }
+
+    handleClick(event) {
 
     }
   
     render() {
       return (
         <form onSubmit={this.handleSubmit}>
-            <label for="equation">Select picture:&nbsp;</label>
-            <input type="file"
+          <label for="equation">Select picture:&nbsp;</label>
+          <input type="file"
             accept="image/png, image/jpeg, image/jpg"
             value={this.state.value}
             onChange={this.handleChange}

@@ -8,9 +8,9 @@ export default function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Math TTS</h1>
+        <h1>LaTeX 2 Speech</h1>
         <p>
-          Math TTS is a web application that allows users to enter a math equation and have it read aloud.
+          Upload a LaTeX file (.tex) or image file (.png, .jpeg, .jpg)!
         </p>
         <ImageForm />
       </header>
