@@ -33,9 +33,9 @@ jobs:
           git-config-email: github-actions[bot]@users.noreply.github.com
 
       - name: Deploy to Firebase
-        uses: w9jds/firebase-action@v11.18.0
-        run: cd client && npm run-script build
+        uses: w9jds/firebase-action@v11.18.0  
         with:
           args: deploy --only hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          PROJECT_PATH: ./client
