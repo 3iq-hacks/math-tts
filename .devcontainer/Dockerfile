@@ -18,6 +18,7 @@ RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requ
 # [Optional] Uncomment this line to install global node packages.
 RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g firebase-tools" 2>&1
 
-# install node_modules in mathtts-site/
-COPY mathtts-site/package*.json /workspaces/MathTTS/mathtts-site/
+# install node_modules in mathtts-site
+# copy package.json and package-lock.json
+COPY mathtts-site/package.json mathtts-site/package-lock.json /workspaces/MathTTS/mathtts-site/
 RUN cd /workspaces/MathTTS/mathtts-site && npm install
