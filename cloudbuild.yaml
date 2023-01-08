@@ -1,11 +1,11 @@
 steps:
   # Retrieve from cache
   # https://depot.dev/blog/docker-layer-caching-in-google-cloud-build
-  # - name: gcr.io/cloud-builders/docker
-  #   entrypoint: bash
-  #   args:
-  #     - -c
-  #     - docker pull us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:latest || exit 0
+  - name: gcr.io/cloud-builders/docker
+    entrypoint: bash
+    args:
+      - -c
+      - docker pull us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:latest || exit 0
 
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
