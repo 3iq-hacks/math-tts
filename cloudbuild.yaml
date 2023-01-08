@@ -15,8 +15,10 @@ steps:
       - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:$COMMIT_SHA'
       - '-t'
       - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:latest'
+      - --cache-from
+      - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:latest'
       - .
-      
+
   # # Push the container image to Artifact Registry
   # - name: 'gcr.io/cloud-builders/docker'
   #   args: ['push',  'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/epic-awesome-repo/math-tts-server:$COMMIT_SHA']
