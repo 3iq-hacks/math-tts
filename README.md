@@ -17,5 +17,5 @@ This project uses ReactJS, Firebase Hosting, Flask (Python), Docker, Google Clou
 - [LaTeX Logo](https://brandslogos.com/wp-content/uploads/images/latex-logo-vector.svg)
 
 ## Screenshots!
-[Screenshot (4)](https://user-images.githubusercontent.com/68800077/211209850-f9a9588e-2184-4850-a3dd-6cef3fd6227d.png)
-[Screenshot (5)](https://user-images.githubusercontent.com/68800077/211209855-594f0dcd-01ab-49a8-8c70-ce8e9302d5d8.png)
+![Screenshot (4)](https://user-images.githubusercontent.com/68800077/211209850-f9a9588e-2184-4850-a3dd-6cef3fd6227d.png)
+![Screenshot (5)](https://user-images.githubusercontent.com/68800077/211209855-594f0dcd-01ab-49a8-8c70-ce8e9302d5d8.png)
