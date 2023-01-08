@@ -59,10 +59,11 @@ steps:
   # also, if it fails, do not exit the build
   # https://console.cloud.google.com/cloud-build/builds;region=global/2c149ffd-20c4-43d4-b1af-2e85de85398a?project=theta-carving-374101
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: bash 
+    entrypoint: gcloud 
     args:
-      - -c
-      - gcloud beta run domain-mappings delete --region us-west1 --domain server.text2speech-la.tech || exit 0
+      - domains 
+      - verify 
+      - text2speech-la.tech
 
   # Adding new custom domain to the cloud run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -78,6 +79,7 @@ steps:
       - 'server'
       - '--domain'
       - 'server.text2speech-la.tech'
+      - '--force-override'
 
 
 images:
