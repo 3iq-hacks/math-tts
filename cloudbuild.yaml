@@ -8,7 +8,6 @@ steps:
       - docker pull us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:latest || exit 0
 
   # Build the container image
-  # i think this might also push as well?
   - name: 'gcr.io/cloud-builders/docker'
     args: 
       - 'build'
@@ -19,6 +18,12 @@ steps:
       - --cache-from
       - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:latest'
       - .
+  
+  # Push the container image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'push'
+      - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:$COMMIT_SHA'
 
   # Deploy container image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
