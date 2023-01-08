@@ -76,7 +76,7 @@ steps:
       - '--region'
       - 'us-west1'
       - '--service'
-      - 'server'
+      - 'math-tts-server'
       - '--domain'
       - 'server.text2speech-la.tech'
       - '--force-override'
