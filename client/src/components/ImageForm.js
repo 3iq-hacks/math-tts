@@ -3,13 +3,14 @@ import axios from 'axios';
 import FormData from 'form-data';
 import ReactAudioPlayer from "react-audio-player";
 import Card from 'react-bootstrap/Card';
+import env from 'react-dotenv';
 
-const ViewResults = ({audioURL}) => {
+const ViewResults = () => {
 
   return (
     <div style={{justifyContent:'center', alignItems:'center', display:'flex', flexDirection:'column'}}>
       <p1>Let's listen to some math!</p1>
-      <ReactAudioPlayer src={audioURL} controls/>
+      <ReactAudioPlayer src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" controls/>
     </div>
   )
 };
@@ -47,12 +48,11 @@ class ImageForm extends React.Component {
       const formData = new FormData();
       formData.append('file', img);
       console.log(formData);
-      axios.post('http://localhost:8000/upload-img', formData, {
+      axios.post(`${env.REACT_APP_API_URL}/upload-img`, formData, {
         headers: {'Content-Type': 'multipart/form-data' }
       })
         .then(function (response) {
             // get data
-            axios.get('http://localhost:8000/get-audio')
             console.log(`Latex is: ${JSON.stringify(response.data)}`);
         })
         .catch(function (error) {
@@ -64,7 +64,10 @@ class ImageForm extends React.Component {
 
       });
     }
-    
+
+    handleClick(event) {
+
+    }
   
     render() {
       return (
@@ -97,9 +100,7 @@ class ImageForm extends React.Component {
         </div>
         <div>
           {this.state.submitted && (
-              <ViewResults>
-                audioURL={}
-              </ViewResults>
+              <ViewResults/>
           )}
       </div>
       </Card>
