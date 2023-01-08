@@ -28,7 +28,7 @@ class ImageForm extends React.Component {
       formData.append(this.state.imageName, this.state.image);
       console.log(formData);
       axios.post('http://localhost:8000/upload-img', formData, {
-        headers: formData.getHeaders()
+        headers: { 'Content-Type': 'multipart/form-data' }
       })
         .then(function (response) {
             console.log(`Latex is: ${response}`);
