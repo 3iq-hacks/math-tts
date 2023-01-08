@@ -46,7 +46,11 @@ async def upload_image(file: UploadFile = File(...)):
         latex = await pix2tex.predict(file)
         print(latex)
 
-        return {'latex': latex}
+        new_file = open('latexFile.txt', 'w')
+        new_file.write(latex)
+        new_file.close()
+
+        return {'latex': latex, 'latex_file': new_file}
 
     return {'error': 'file not allowed'}
 

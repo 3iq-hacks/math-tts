@@ -9,8 +9,9 @@ const ViewResults = () => {
 
   return (
     <div style={{justifyContent:'center', alignItems:'center', display:'flex', flexDirection:'column'}}>
-      <p1>Let's listen to some math!</p1>
-      <ReactAudioPlayer src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" controls/>
+      <img src="https://media.tenor.com/MjdDlyCEARcAAAAC/math-dance.gif" alt='' width='200px' style={{borderRadius: '10px'}}/>
+      <p1 style={{padding: '10px'}}>Let's listen to some math!</p1>
+      <ReactAudioPlayer src={audioURL} controls/>
     </div>
   )
 };
@@ -36,7 +37,7 @@ class ImageForm extends React.Component {
             console.log('No file selected')
             this.setState({imageURL: '', image: null});
         }
-        this.setState({value: event.target.value});
+        this.setState({value: event.target.value, submitted: false});
     }
   
     handleSubmit(event) {
@@ -53,7 +54,10 @@ class ImageForm extends React.Component {
       })
         .then(function (response) {
             // get data
+            //axios.get('http://localhost:8000/get-audio')
             console.log(`Latex is: ${JSON.stringify(response.data)}`);
+            console.log(response.data)
+            //download("download_sus.txt", response.data.latex_file)
         })
         .catch(function (error) {
             console.log(error);
@@ -64,11 +68,15 @@ class ImageForm extends React.Component {
 
       });
     }
-
-    handleClick(event) {
-
-    }
   
+    download() {
+      var save = document.getElementById("example").value;
+      var blob = new Blob([save], {
+        type: "text/plain;charset=utf-8"
+      });
+      save(blob, "yournewfile.txt");
+    }
+
     render() {
       return (
       <div>
@@ -78,9 +86,8 @@ class ImageForm extends React.Component {
                 flexDirection:'column',
                 alignItems: "center",
                 backgroundColor: "#000000",
-                borderWidth: "10px",
-                borderColor: "black",
-                borderRadius: "10px",
+                border: '5px solid white',
+                borderRadius: "15px",
                 padding: "20px"
             }}
         >
@@ -96,7 +103,7 @@ class ImageForm extends React.Component {
         </form>
         </div>
         <div>
-          <img id="target" alt='' src={this.state.imageURL} width="300px"/>
+          <img id="target" alt='' src={this.state.imageURL} width="300px" style={{margin: '50px', borderRadius: '15px'}}/>
         </div>
         <div>
           {this.state.submitted && (
