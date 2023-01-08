@@ -31,6 +31,7 @@ steps:
       - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:$COMMIT_SHA'
       - '--region'
       - 'us-west1'
+      - '--platform',
       - 'managed'
       - '--allow-unauthenticated'
 
