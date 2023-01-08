@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import FormData from 'form-data';
-import styled from "styled-components";
+// import styled from "styled-components";
 
 class ImageForm extends React.Component {
     constructor(props) {
@@ -42,9 +42,11 @@ class ImageForm extends React.Component {
         })
         .catch(function (error) {
             console.log(error);
-        });
-    
-      this.setState({image: null});
+        })
+       .finally(() => { 
+            this.setState({image: null, imageUrl: '', value: ''});
+      });
+
 
     }
 
@@ -62,7 +64,7 @@ class ImageForm extends React.Component {
             onChange={this.handleChange}
             name="equation" />
           <input type="submit" value="Upload File" />
-          <img id="target" src={this.state.imageUrl} width="300px"/>
+          <img id="target" alt='' src={this.state.imageUrl} width="300px"/>
         </form>
       );
     }
