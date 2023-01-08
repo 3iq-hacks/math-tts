@@ -6,7 +6,7 @@ import FormData from 'form-data';
 class ImageForm extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {image: null, imageName: '', value: ''};
+      this.state = {image: null, imageName: '', value: '', submitted: false};
   
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -37,10 +37,8 @@ class ImageForm extends React.Component {
             console.log(error);
         })
        .finally(() => { 
-            this.setState({image: null, value: '', imageName: ''});
+            this.setState({image: null, value: '', imageName: '', submitted: true});
       });
-
-
     }
 
     handleClick(event) {
@@ -49,6 +47,7 @@ class ImageForm extends React.Component {
   
     render() {
       return (
+        <div>
         <form onSubmit={this.handleSubmit}>
           <label for="equation">Select picture:&nbsp;</label>
           <input type="file"
@@ -59,6 +58,13 @@ class ImageForm extends React.Component {
           <input type="submit" value="Upload File" />
           <img id="target" alt='' src={this.state.image} width="300px"/>
         </form>
+        {this.state.submitted && (
+            <ViewResults
+                audioInfo={state.audioInfo}
+                boomedBlobURL={state.boomedBlobURL}
+            />
+        )}
+      </div>
       );
     }
   }
