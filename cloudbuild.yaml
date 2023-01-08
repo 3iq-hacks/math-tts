@@ -40,4 +40,4 @@ images:
   - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:latest'
 
 options:
-  machineType: 'N1_HIGHCPU_4'
+  machineType: 'e2-highcpu-4'
