@@ -6,7 +6,7 @@ import styled from "styled-components";
 class ImageForm extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {image: null, imageName: '', value: ''};
+      this.state = {image: null, imageUrl: '', value: ''};
   
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -14,9 +14,14 @@ class ImageForm extends React.Component {
   
     handleChange(event) {
         if (event.target.files && event.target.files[0]) {
-            this.setState({image: URL.createObjectURL(event.target.files[0]), imageName: event.target.files[0].name});
-          }
-      this.setState({value: event.target.value});
+            const file = event.target.files[0];
+            console.log('Got file:', file);
+            this.setState({imageUrl: URL.createObjectURL(file), image: file});
+        } else {
+            console.log('No file selected')
+            this.setState({imageUrl: '', image: null});
+        }
+        this.setState({value: event.target.value});
     }
   
     handleSubmit(event) {
@@ -24,14 +29,16 @@ class ImageForm extends React.Component {
       
       // https://masteringjs.io/tutorials/axios/axios-multi-form-data
       // uploading a form requires formData
+      const img = this.state.image;
       const formData = new FormData();
-      formData.append(this.state.imageName, this.state.image);
+      formData.append('file', img);
       console.log(formData);
       axios.post('http://localhost:8000/upload-img', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: {'Content-Type': 'multipart/form-data' }
       })
         .then(function (response) {
-            console.log(`Latex is: ${response}`);
+            // get data
+            console.log(`Latex is: ${JSON.stringify(response.data)}`);
         })
         .catch(function (error) {
             console.log(error);
@@ -55,7 +62,7 @@ class ImageForm extends React.Component {
             onChange={this.handleChange}
             name="equation" />
           <input type="submit" value="Upload File" />
-          <img id="target" src={this.state.image} width="300px"/>
+          <img id="target" src={this.state.imageUrl} width="300px"/>
         </form>
       );
     }
