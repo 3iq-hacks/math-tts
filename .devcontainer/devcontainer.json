@@ -19,6 +19,8 @@
   // https://www.kenmuse.com/blog/avoiding-dubious-ownership-in-dev-containers/
   // https://github.com/microsoft/vscode-remote-release/issues/6810#issuecomment-1310980232
   "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
+  // VERY hacky way to make sure we don't run into permission issues with the server
+  "postCreateCommand": "sudo chown -R vscode /usr/local/lib/python3.9/site-packages/pix2tex/model/",
 
   // Features to add to the dev container. More info: https://containers.dev/features.
   // "features": {},

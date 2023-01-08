@@ -15,10 +15,9 @@ RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requ
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 
-# [Optional] Uncomment this line to install global node packages.
-RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g firebase-tools" 2>&1
-
 # install node_modules in mathtts-site
 # copy package.json and package-lock.json
 COPY client/package.json client/package-lock.json /workspaces/math-tts/client/
 RUN cd /workspaces/math-tts/client && npm install
+
+COPY . .
