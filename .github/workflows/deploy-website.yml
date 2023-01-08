@@ -31,3 +31,10 @@ jobs:
           # https://github.com/actions/checkout/discussions/479#discussioncomment-625461
           git-config-name: github-actions[bot]
           git-config-email: github-actions[bot]@users.noreply.github.com
+
+      - name: Deploy to Firebase
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
