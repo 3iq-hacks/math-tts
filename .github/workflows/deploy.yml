@@ -29,7 +29,7 @@ jobs:
           SSH_IP: ${{ secrets.SSH_IP }}
 
       - name: 🚀 Deploy site
-        run: ssh my-vm 'cd ~/code/MathTTS && ./redeploy-server.sh'
+        run: ssh my-vm 'cd ~/code/MathTTS && ./redeploy_server.sh'
 
       # https://stackoverflow.com/a/64649397
       - name: 📅 Dynamically set $DATE
