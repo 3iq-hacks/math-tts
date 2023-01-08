@@ -26,7 +26,7 @@ steps:
       - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:$COMMIT_SHA'
 
   # Deploy container image to Cloud Run
-  - name: 'gcr.io/google.com/clcloudsdktool/cloud-sdk'
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
       - 'run'
