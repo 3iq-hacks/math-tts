@@ -53,33 +53,6 @@ steps:
       - '4'
       - '--execution-environment'
       - 'gen2' # Network file system support, full Linux compatibility, faster CPU and network performance. 
-  
-  # Deleting old custom domain on the cloud run
-  # Somehow, we have to specify regions...
-  # also, if it fails, do not exit the build
-  # https://console.cloud.google.com/cloud-build/builds;region=global/2c149ffd-20c4-43d4-b1af-2e85de85398a?project=theta-carving-374101
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: gcloud 
-    args:
-      - domains 
-      - verify 
-      - text2speech-la.tech
-
-  # Adding new custom domain to the cloud run
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: gcloud
-    args:
-      - 'beta' 
-      - 'run' 
-      - 'domain-mappings'
-      - 'create'
-      - '--region'
-      - 'us-west1'
-      - '--service'
-      - 'math-tts-server'
-      - '--domain'
-      - 'server.text2speech-la.tech'
-      - '--force-override'
 
 
 images:
