@@ -10,6 +10,16 @@ permissions:
   packages: write
   contents: read
 
+
+env:
+  PROJECT_ID: theta-carving-374101
+  GAR_LOCATION: northamerica-northeast2
+  REPOSITORY: math-tts
+  SERVICE: server
+  REGION: northamerica-northeast2 # low carbon!
+
+
+
 jobs:
   push-docker-ghcr:
     name: Build and Push to GHCR
@@ -38,7 +48,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}:latest
+          tags: "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}"
 
   deploy:
       # Add 'id-token' with the intended permissions for workload identity federation
@@ -67,7 +77,7 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v1
         with:
           service: server
-          image: ghcr.io/${{ github.repository }}:latest
+          image: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}
           region: northamerica-northeast2 # low carbon!
 
       - name: Use output
