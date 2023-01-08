@@ -9,4 +9,3 @@ COPY server/ .
 CMD ["uvicorn", "main:app", "--host" ]
 
 EXPOSE 8000
-

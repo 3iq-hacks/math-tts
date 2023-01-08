@@ -6,47 +6,55 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  packages: write
+  contents: read
+
 jobs:
-  deploy:
-    name: Deploy to Server
+  push-docker-ghcr:
+    name: Build and Push to GHCR
     runs-on: ubuntu-latest
     steps:
-      - name: 💻 Configure SSH
-        run: |
-          mkdir -p ~/.ssh/
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy-key.pem
-          chmod 600 ~/.ssh/deploy-key.pem
-          cat >>~/.ssh/config <<END
-          Host my-vm
-            HostName $SSH_IP
-            User $SSH_USER
-            IdentityFile ~/.ssh/deploy-key.pem
-            StrictHostKeyChecking no
-          END
-        env:
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_IP: ${{ secrets.SSH_IP }}
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: 🚀 Deploy site
-        run: ssh my-vm 'cd ~/code/MathTTS && ./redeploy_server.sh'
+      - name: Login to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      # https://stackoverflow.com/a/64649397
-      - name: 📅 Dynamically set $DATE
-        run: echo "DATE=$(date +'%Y-%m-%dT%H:%M:%S.000Z')" >> $GITHUB_ENV
+      # I don't need to keep track of previous versions, so I just use latest
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          platforms: linux/arm64
+          push: true
+          tags: ghcr.io/${{ github.repository }}:latest
 
-      - name: 💚 Send Deployment Message on Success
-        env:
-          TITLE: '🚀 Server Deployment Successful!'
-          DESCRIPTION: '**Repo:** ${{ github.repository }}\n\n**Commit Hash:** ${{ github.sha }}'
-          URL: 'https://github.com/ajsingh1012/MathTTS/${{ github.sha }}'
-        # The backslashes around double quotes are annoying but if I use single quotes, discord will say the JSON is invalid for some reason
-        run: |
-          curl \
-            -H "Content-Type: application/json" \
-            -d "{ \"embeds\": [{ \"title\": \"$TITLE\", \"description\": \"$DESCRIPTION\", \"timestamp\": \"$DATE\", \"url\": \"$URL\" }]}" \
-            "${{ secrets.DISCORD_WEBHOOK }}"
+  deploy:
+    name: Deploy to Cloud Run
+    runs-on: ubuntu-latest
+    needs: push-docker-ghcr
+    steps:
+      - name: Google Auth
+        id: auth
+        uses: 'google-github-actions/auth@v1'
+        with:
+          # these were set up using the following guide: https://github.com/google-github-actions/auth#setting-up-workload-identity-federation
+          # no idea how this is better 
+          workload_identity_provider: '${{ secrets.WIF_PROVIDER }}' # e.g. - projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider
+          service_account: '${{ secrets.WIF_SERVICE_ACCOUNT }}' # e.g. - my-service-account@my-project.iam.gserviceaccount.com
+      
+      - name: Deploy to Cloud Run
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v1
+        with:
+          service: server
+          image: ghcr.io/${{ github.repository }}:latest
+          region: northamerica-northeast2 # low carbon!
 
-      - name: 🚨 Send Deployment Message on Failure
-        if: ${{ failure() }}
-        run: curl -s -X POST "${{ secrets.DISCORD_WEBHOOK }}" -d "content=🚨 Deployment failed for commit ${{ github.sha }}!"
+      - name: Use output
+        run: 'curl "${{ steps.deploy.outputs.url }}"'
