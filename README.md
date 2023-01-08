@@ -15,8 +15,10 @@ This project uses ReactJS, Firebase Hosting, Flask (Python), Docker, Google Clou
 
 ## Pictures/gifs References
 - [LaTeX Logo](https://brandslogos.com/wp-content/uploads/images/latex-logo-vector.svg)
+- [Dancing gif](https://media.tenor.com/MjdDlyCEARcAAAAC/math-dance.gif)
 
 ## Screenshots
 ![Screenshot (4)](https://user-images.githubusercontent.com/68800077/211209850-f9a9588e-2184-4850-a3dd-6cef3fd6227d.png)
 ![Screenshot (5)](https://user-images.githubusercontent.com/68800077/211209855-594f0dcd-01ab-49a8-8c70-ce8e9302d5d8.png)
 ![Screenshot (6)](https://user-images.githubusercontent.com/68800077/211210048-2289858b-eff1-4d7b-b6bb-42e37d0585fa.png)
+![/image](https://user-images.githubusercontent.com/68800077/211212030-a4e0f45a-ac52-4094-b6f1-62e75c381e57.png)
