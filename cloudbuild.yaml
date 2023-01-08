@@ -56,18 +56,13 @@ steps:
   
   # Deleting old custom domain on the cloud run
   # Somehow, we have to specify regions...
+  # also, if it fails, do not exit the build
   # https://console.cloud.google.com/cloud-build/builds;region=global/2c149ffd-20c4-43d4-b1af-2e85de85398a?project=theta-carving-374101
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: gcloud
+    entrypoint: bash 
     args:
-      - 'beta'
-      - 'run'
-      - 'domain-mappings'
-      - 'delete'
-      - '--region'
-      - 'us-west1'
-      - '--domain'
-      - 'server.text2speech-la.tech'
+      - -c
+      - gcloud beta run domain-mappings delete --region us-west1 --domain server.text2speech-la.tech || exit 0
 
   # Adding new custom domain to the cloud run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
