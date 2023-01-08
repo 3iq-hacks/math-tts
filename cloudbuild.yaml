@@ -26,7 +26,7 @@ steps:
       - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:$COMMIT_SHA'
 
   # Deploy container image to Cloud Run
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  - name: 'gcr.io/google.com/clcloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
       - 'run'
@@ -41,7 +41,12 @@ steps:
       - '--allow-unauthenticated'
       - '--port'
       - '8000'
-
+      - '--memory' # beefier system to execute OCR 
+      - '8Gi'
+      - '--cpu'
+      - '4'
+      - '--execution-environment'
+      - 'gen2' # Network file system support, full Linux compatibility, faster CPU and network performance. 
 
 images:
   - 'us-west1-docker.pkg.dev/$PROJECT_ID/math-tts/server:$COMMIT_SHA'
