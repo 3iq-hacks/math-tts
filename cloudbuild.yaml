@@ -32,7 +32,7 @@ steps:
       - '--region'
       - 'us-west1'
       - '--platform',
-      - 'managed'
+      - 'managed',
       - '--allow-unauthenticated'
 
 
