@@ -34,6 +34,7 @@ jobs:
 
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@v11.18.0
+        run: cd client && npm run-script build
         with:
           args: deploy --only hosting
         env:
