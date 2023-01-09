@@ -2,7 +2,17 @@
 
 By Aneeljyot Alagh, Curtis Kan, Joshua Ji, Kailash Seshandri, Shehraj Singh, and Vedant Vyas.
 
-This project uses ReactJS, Firebase Hosting, Flask (Python), Docker, Google Cloud Run, OCR, and
+This project uses React for the frontend, and Flask for the backend. We use OCR tools for LaTeX image processing, and Google Cloud Platform for deployment and hosting.
+
+## Running
+
+The simplest way to get started with the project is to open it up using Devcontainers, or using Github Codespaces. After that, run the following:
+
+```bash
+concurrently "cd client && npm run start" "cd server && uvicorn main:app --reload"
+```
+
+The client will open on [http://localhost:3000](http://localhost:3000), while the server can be accessed at [http://localhost:8000](http://localhost:8000)
 
 ## Libraries Used
 
