@@ -2,7 +2,7 @@
 
 By Aneeljyot Alagh, Curtis Kan, Joshua Ji, Kailash Seshandri, Shehraj Singh, and Vedant Vyas.
 
-This project uses React for the frontend, and Flask for the backend. We use OCR tools for LaTeX image processing, and Google Cloud Platform for deployment and hosting.
+This project uses React for the frontend, and Flask for the backend. We use OCR tools for LaTeX image processing, and Google Cloud Platform for deployment and hosting. We use ANTLR library to build our own lexer and parser to convert latex to english which built on the top of existing latex to sympy expressions. 
 
 ## Running
 
