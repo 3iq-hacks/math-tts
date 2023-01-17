@@ -4,6 +4,7 @@ from fastapi.responses import FileResponse
 import pix2tex.api.app as pix2tex
 from fastapi.middleware.cors import CORSMiddleware
 from latex2sympy.latex2sympy2 import latex2sympyStr
+import util
 
 # import sys
 # sys.path.append('..')
@@ -37,8 +38,11 @@ async def upload_image(file: UploadFile = File(...)):
     '''
     Receives an image of a LaTeX equation, and returns the latex
     '''
+    if not file.filename:
+        return {'error': 'no file'}
+
     # check that the file is an image
-    if file.filename and allowed_file(file.filename):
+    if util.allowed_file(file.filename):
         await pix2tex.load_model()
         latex = await pix2tex.predict(file)
         print(latex)
@@ -48,12 +52,13 @@ async def upload_image(file: UploadFile = File(...)):
         new_file.close()
 
         return {'latex': latex, 'latex_file': new_file}
-    elif tex_file(file.filename):
+
+    if util.tex_file(file.filename):
         # save file to input.txt
         with open('input.txt', 'wb') as buffer:
             while chunk := await file.read(1024):
                 buffer.write(chunk)
-        # # read file
+        # read file
         with open('input.txt', 'r') as f:
             latex = f.read()
             english = latex2sympyStr(latex)
@@ -61,19 +66,3 @@ async def upload_image(file: UploadFile = File(...)):
             return {'latex': latex, 'english': english}
 
     return {'error': 'file not allowed'}
-
-
-def allowed_file(filename: str):
-    '''
-    Checks if a file is "allowed" by seeing its extension
-    '''
-    ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
-    return '.' in filename and filename.rsplit('.')[-1].lower() in ALLOWED_EXTENSIONS
-
-
-def tex_file(filename: str):
-    '''
-    Checks if a file is "allowed" by seeing its extension
-    '''
-    ALLOWED_EXTENSIONS = ['tex']
-    return '.' in filename and filename.rsplit('.')[-1].lower() in ALLOWED_EXTENSIONS

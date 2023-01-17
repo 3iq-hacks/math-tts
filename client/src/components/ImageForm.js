@@ -22,7 +22,6 @@ class ImageForm extends React.Component {
       super(props);
 
       this.state = {image: null, imageURL: '', value: '', submitted: false, latexValue: ''};
-
   
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
