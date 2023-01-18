@@ -1,6 +1,11 @@
+import React from "react";
 import ReactAudioPlayer from "react-audio-player";
 
-export const ViewResults = (audioURL) => {
+interface Props {
+    audioURL: string
+}
+
+const ViewResults: React.FC<Props> = ({ audioURL }) => {
     return (
         <div
             style={{
@@ -17,8 +22,9 @@ export const ViewResults = (audioURL) => {
                 style={{ borderRadius: "10px" }}
             />
             <p style={{ padding: "10px" }}>Let's listen to some math!</p>
-            <ReactAudioPlayer src={`${audioURL.audioURL}`} controls />
-            <p>{`${audioURL.latex}`}</p>
+            <ReactAudioPlayer src={`${audioURL}`} controls />
         </div>
     );
 };
+
+export default ViewResults;

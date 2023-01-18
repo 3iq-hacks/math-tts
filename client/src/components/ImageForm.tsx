@@ -3,8 +3,7 @@ import axios from 'axios';
 import FormData from 'form-data';
 import Card from 'react-bootstrap/Card';
 import env from 'react-dotenv';
-import { Grid } from 'react-awesome-spinners';
-import { ViewResults } from './ViewResults';
+import ViewResults from './ViewResults';
 import { useMachine } from '@xstate/react';
 import { createMachine } from 'xstate';
 
