@@ -32,7 +32,9 @@
     "vscode": {
       "extensions": [
 		"GitHub.copilot",
-		"ms-vsliveshare.vsliveshare"
+		"ms-vsliveshare.vsliveshare",
+		"esbenp.prettier-vscode",
+		"statelyai.stately-vscode"
 	]
     }
   },
