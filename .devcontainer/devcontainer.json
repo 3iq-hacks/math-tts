@@ -34,7 +34,9 @@
 		"GitHub.copilot",
 		"ms-vsliveshare.vsliveshare",
 		"esbenp.prettier-vscode",
-		"statelyai.stately-vscode"
+		"statelyai.stately-vscode",
+		"bradlc.vscode-tailwindcss",
+		"moalamri.inline-fold"
 	]
     }
   },
