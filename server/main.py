@@ -34,7 +34,7 @@ async def root():
 
 
 @app.post('/upload-file')
-async def upload_image(file: UploadFile = File(...)):
+async def upload_file(file: UploadFile = File(...)):
     '''
     Receives an image of a LaTeX equation, and returns the latex
     '''

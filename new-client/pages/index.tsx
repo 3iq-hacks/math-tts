@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Lato } from '@next/font/google'
 import FileUpload from '@/components/FileUpload'
+import { useXState } from '../lib/StateMachineContext'
 
 const lato = Lato({
     subsets: ['latin'],
@@ -10,6 +11,7 @@ const lato = Lato({
 })
 
 const Home: NextPage = () => {
+
     return (
         <div className="flex min-h-screen flex-col items-center justify-center">
             <Head>
@@ -17,7 +19,7 @@ const Home: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <main className="flex w-full flex-1 flex-col items-center justify-center px-20 spac text-center dark:bg-slate-800">
+            <main className="flex w-full flex-1 flex-col items-center justify-center px-20 space-y-4 text-center dark:bg-slate-800">
                 <h1 className="text-6xl font-bold dark:text-slate-100 ">
                     Latex 2 <span className="text-blue-600 dark:text-indigo-400">Speech</span>
                 </h1>
