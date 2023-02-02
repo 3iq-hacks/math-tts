@@ -6,7 +6,7 @@ import { stateValuesEqual } from 'xstate/lib/State';
 const DragAndDropSection = () => {
     const { state } = useXState();
 
-    if (state.context.file) {
+    if (state.matches('HasFile') || state.matches('Uploading')) {
         // show file image
         return (
             <div className="flex flex-col items-center justify-center pt-5 pb-6 w-full p-4 space-y-2">
@@ -18,7 +18,7 @@ const DragAndDropSection = () => {
                         className='object-contain'
                     />
                 </div>
-                <p className="text-xl font-light text-slate-50">{state.context.file?.name}</p>
+                <p className="text-xl font-light text-slate-50">{state.context.file.name}</p>
             </div>
         )
     }
@@ -37,13 +37,11 @@ const UploadButton = () => {
 
 
     const uploadFile = async () => {
-        const file = state.context.file;
-
         // notice how I'm checking if the state.context.file exists here, 
         // but the button disabled class is based on the state.matches('HasFile')
         // this cannot be a good design!
         // i still have a long way to go to understand the xstate library...
-        if (!file) {
+        if (!state.matches('HasFile')) {
             console.log('No file to upload, aborting...');
             return;
         }
@@ -51,20 +49,24 @@ const UploadButton = () => {
         try {
             // https://masteringjs.io/tutorials/axios/axios-multi-form-data
             // uploading a form requires formData
-            console.log('Uploading file...', file)
+
+            // also by this point, the state.context.file is not null!
+            // xstate knows the state has to be HasFile, which has a non-null file
+            const file = state.context.file;
+            console.log('Uploading file...', file);
             const formData = new FormData();
             formData.append('file', file);
             console.log(formData.get('file'));
             send('UPLOAD')
 
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/upload-file-hehe`, formData, {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/upload-file`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             })
             console.log(`Latex is: ${response.data.latex}`);
-            send({ type: 'SUCCESS', latex: response.data.latex })
+            send({ type: 'UPLOAD_SUCCESS', latex: response.data.latex })
         } catch (error) {
             console.log(error);
-            send({ type: 'ERROR', error: String(error) })
+            send({ type: 'UPLOAD_ERROR', error: String(error) })
         }
     }
 
@@ -117,8 +119,14 @@ const FileUpload: React.FC = () => {
 
     const insertFile: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         const file = e.target.files?.[0];
+        console.log('File picked: ', file)
         if (file) {
             send({ type: 'PICKFILE', file });
+            // reset files
+            // if we don't do this, when we upload the file and come to the success state,
+            // and try to upload the same file again, the form won't do anything
+            // since it thinks the file is the same
+            e.target.value = '';
         }
     }
 
