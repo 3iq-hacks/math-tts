@@ -20,7 +20,9 @@ const Home: NextPage = () => {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center">
             <Head>
-                <title>Create Next App</title>
+                <title>MathTTS</title>
+                <meta name="description" content="Latex text-to-speech" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
