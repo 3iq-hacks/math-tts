@@ -6,20 +6,26 @@ export interface Context {
     // for type stuff, I'll make thus non nullable
     latex: string | null;
     error: string | null;
+    dragStatus: DragStatus;
 }
 
+type DragStatus = 'idle' | 'dragging';
+
+// typescript seems to take the minimal type of the union 
+// for example, PickNull<Context, 'file'> & Context = PickNull<Context, 'file'>
 export type States =
-    | { value: 'NoFile', context: ForceNull<Context> }
-    | { value: 'HasFile', context: PickNullables<Context, 'file', 'latex' | 'error'> }
-    | { value: 'Uploading', context: PickNullables<Context, 'file', 'latex' | 'error'> }
-    | { value: 'Success', context: PickNullables<Context, 'latex', 'file' | 'error'> }
-    | { value: 'Error', context: PickNullables<Context, 'error', 'file' | 'latex'> }
+    | { value: 'NoFile', context: PickNull<Context, 'file' | 'error' | 'latex'> & Context }
+    | { value: 'HasFile', context: PickNullables<Context, 'file', 'latex' | 'error'> & Context }
+    | { value: 'Uploading', context: PickNullables<Context, 'file', 'latex' | 'error'> & Context }
+    | { value: 'Success', context: PickNullables<Context, 'latex', 'file' | 'error'> & Context }
+    | { value: 'Error', context: PickNullables<Context, 'error', 'file' | 'latex'> & Context }
 
 export type Events =
     | { type: 'PICKFILE'; file: File }
     | { type: 'UPLOAD' }
     | { type: 'UPLOAD_SUCCESS', latex: string }
     | { type: 'UPLOAD_ERROR', error: string }
+    | { type: 'DRAG_STATUS', status: DragStatus }
 
 export const machine =
 
@@ -30,15 +36,14 @@ export const machine =
         context: {
             file: null,
             latex: null,
-            error: null
+            error: null,
+            dragStatus: 'idle'
         },
         states: {
             NoFile: {
                 on: {
-                    PICKFILE: {
-                        target: 'HasFile',
-                        actions: ['addfile']
-                    },
+                    PICKFILE: { target: 'HasFile', actions: ['addfile'] },
+                    DRAG_STATUS: { actions: ['setDrag'] },
                 },
             },
 
@@ -61,12 +66,14 @@ export const machine =
                 entry: ['removeFile'],
                 on: {
                     PICKFILE: { target: 'HasFile', actions: ['addfile'] },
+                    DRAG_STATUS: { actions: ['setDrag'] },
                 },
             },
 
             Error: {
                 on: {
                     PICKFILE: { target: 'HasFile', actions: ['addfile'] },
+                    DRAG_STATUS: { actions: ['setDrag'] },
                 },
             }
         },
@@ -93,6 +100,11 @@ export const machine =
             addError: (context, event) => {
                 if (event.type === 'UPLOAD_ERROR') {
                     context.error = event.error;
+                }
+            },
+            setDrag: (context, event) => {
+                if (event.type === 'DRAG_STATUS') {
+                    context.dragStatus = event.status;
                 }
             }
         }

@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { Lato } from '@next/font/google'
 import FileUpload from '@/components/FileUpload'
 import { useXState } from '../lib/StateMachineContext'
+import Toaster from '@/components/Toaster'
 
 const lato = Lato({
     subsets: ['latin'],
@@ -26,6 +27,9 @@ const Home: NextPage = () => {
                 <p className={`text-lg dark:text-slate-100`}>Upload a LaTeX file (.tex) or image file (.png, .jpeg, .jpg) to get started!</p>
                 <FileUpload />
             </main>
+
+            {/* Display toasts on the bottom right */}
+            <Toaster />
 
             <footer className="flex h-24 w-full items-center justify-center border-t dark:border-slate-600 dark:bg-slate-800">
                 <a
