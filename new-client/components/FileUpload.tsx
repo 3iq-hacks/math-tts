@@ -9,7 +9,8 @@ import ReactAudioPlayer from "react-audio-player";
 const DragAndDropInner = () => {
     const { state } = useXState();
 
-    if (state.matches('HasFile') || state.matches('Uploading')) {
+    // there are lots of states where we'll have the file, so we just check if the file is non null
+    if (state.context.file) {
         // show file image
         return (
             <div className="flex flex-col items-center justify-center pt-5 pb-6 w-full p-4 space-y-2">

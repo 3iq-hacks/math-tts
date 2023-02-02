@@ -17,7 +17,7 @@ export type States =
     | { value: 'NoFile', context: PickNull<Context, 'file' | 'response' | 'latex'> & Context }
     | { value: 'HasFile', context: PickNullables<Context, 'file', 'latex'> & Context }
     | { value: 'Uploading', context: PickNullables<Context, 'file', 'latex' | 'response'> & Context }
-    | { value: 'GotResponse', context: PickNullables<Context, 'latex' | 'response', 'file'> & Context }
+    | { value: 'GotResponse', context: PickNonNull<Context, 'file' | 'latex' | 'response'> & Context }
 
 export type Events =
     | { type: 'PICKFILE'; file: File }
@@ -83,10 +83,6 @@ export const machine =
                     console.log('DRAG_STATUS MACHINE', event.status);
                     context.dragStatus = event.status;
                 }
-            },
-            removeFile: (context, _) => {
-                console.log('REMOVEFILE MACHINE');
-                context.file = null;
             },
             // add APIResponse error
             addResponse: (context, event) => {
