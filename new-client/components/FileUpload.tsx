@@ -51,12 +51,13 @@ const UploadButton = () => {
         try {
             // https://masteringjs.io/tutorials/axios/axios-multi-form-data
             // uploading a form requires formData
+            console.log('Uploading file...', file)
             const formData = new FormData();
             formData.append('file', file);
-            console.log(formData);
+            console.log(formData.get('file'));
             send('UPLOAD')
 
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/upload-img`, formData, {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/upload-file-hehe`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             })
             console.log(`Latex is: ${response.data.latex}`);
@@ -71,9 +72,11 @@ const UploadButton = () => {
     const disabledClass = 'opacity-50 cursor-not-allowed';
 
     if (state.matches('Uploading')) {
-        <button className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${disabledClass}`}>
-            Uploading...
-        </button>
+        return (
+            <button className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${disabledClass}`}>
+                Uploading...
+            </button>
+        )
     }
 
     if (!state.context.file) {
@@ -91,6 +94,22 @@ const UploadButton = () => {
             Upload
         </button>
     )
+}
+
+const DisplayError = () => {
+    const { state } = useXState();
+
+    if (state.matches('Error')) {
+        return (
+            <div className="flex flex-col items-center justify-center w-full p-4 space-y-1">
+                <p className="text-xl text-red-500">Error uploading file!</p>
+                <p className="text-sm font-light text-slate-400">{state.context.error}</p>
+                <p className="text-sm font-light text-slate-50">Please check the console for more information!</p>
+            </div>
+        )
+    }
+
+    return null;
 }
 
 const FileUpload: React.FC = () => {
@@ -115,6 +134,7 @@ const FileUpload: React.FC = () => {
                     onChange={insertFile} />
             </label>
             <UploadButton />
+            <DisplayError />
         </div>
     )
 }

@@ -4,6 +4,7 @@ export interface Context {
     file: File | null;
     // for type stuff, I'll make thus non nullable
     latex: string;
+    error: string;
 }
 
 export const machine =
@@ -20,7 +21,8 @@ export const machine =
         },
         context: {
             file: null,
-            latex: ''
+            latex: '',
+            error: ''
         },
         states: {
             NoFile: {
@@ -41,12 +43,14 @@ export const machine =
 
             Uploading: {
                 on: {
-                    SUCCESS: { target: 'Success' },
-                    ERROR: { target: 'Error' },
+                    SUCCESS: { target: 'Success', actions: ['addLatex'] },
+                    ERROR: { target: 'Error', actions: ['addError'] },
                 },
             },
 
             Success: {
+                // delete file when we enter into success state
+                entry: ['removeFile'],
                 on: {
                     PICKFILE: { target: 'HasFile' },
                 },
@@ -68,6 +72,19 @@ export const machine =
                 if (event.type === 'PICKFILE') {
                     console.log('PICKFILE MACHINE', event.file.name);
                     context.file = event.file;
+                }
+            },
+            addLatex: (context, event) => {
+                if (event.type === 'SUCCESS') {
+                    context.latex = event.latex;
+                }
+            },
+            removeFile: (context, _) => {
+                context.file = null;
+            },
+            addError: (context, event) => {
+                if (event.type === 'ERROR') {
+                    context.error = event.error;
                 }
             }
         }
