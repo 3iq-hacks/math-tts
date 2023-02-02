@@ -201,7 +201,8 @@ const DisplayResponse = () => {
                 <p className="text-xl text-green-500">File uploaded successfully!</p>
                 <p className="text-sm font-light text-slate-400">Latex: {response.latex}</p>
                 <p className="text-sm font-light text-slate-400">English: {response.english}</p>
-                <ReactAudioPlayer src={response.mp3} controls />
+                {/* http://www.iandevlin.com/blog/2012/09/html5/html5-media-and-data-uri/ */}
+                <ReactAudioPlayer src={`data:audio/mp3;base64,${response.mp3}`} controls />
             </div>
         )
     }
