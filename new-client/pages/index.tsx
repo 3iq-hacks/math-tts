@@ -12,6 +12,7 @@ const lato = Lato({
 })
 
 const Home: NextPage = () => {
+    const { state } = useXState();
 
     return (
         <div className="flex min-h-screen flex-col items-center justify-center">
@@ -25,6 +26,7 @@ const Home: NextPage = () => {
                     Latex 2 <span className="text-blue-600 dark:text-indigo-400">Speech</span>
                 </h1>
                 <p className={`text-lg dark:text-slate-100`}>Upload a LaTeX file (.tex) or image file (.png, .jpeg, .jpg) to get started!</p>
+                <p className='text-md text-slate-50'>{state.value.toString()}</p>
                 <FileUpload />
             </main>
 

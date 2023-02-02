@@ -1,6 +1,7 @@
 import os
+import io
 from fastapi import FastAPI, UploadFile, File
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse, Response
 import pix2tex.api.app as pix2tex
 from fastapi.middleware.cors import CORSMiddleware
 from latex2sympy.latex2sympy2 import latex2sympyStr
@@ -8,6 +9,8 @@ import util
 import latex2sympy.tts as tts
 from typing import Tuple
 from google.cloud.texttospeech_v1.types import SynthesizeSpeechResponse
+import base64
+
 
 # import sys
 # sys.path.append('..')
@@ -42,7 +45,7 @@ async def upload_file(file: UploadFile = File(...)):
     Receives an image of a LaTeX equation, and returns the latex
     '''
     if not file.filename:
-        return {'error': 'no file'}
+        return JSONResponse({'tag': 'error', 'error': 'no file'})
 
     print(f'UPLOAD FILE: {file.filename}')
     curr_latex = ''
@@ -67,18 +70,17 @@ async def upload_file(file: UploadFile = File(...)):
 
         english, mp3 = analyze_latex(curr_latex)
 
-        # save mp3 to file
-        print(f'  Saving mp3 to file...')
-
+        # https://stackoverflow.com/a/59786861
         return {
+            'tag': 'success',
             'latex': curr_latex,
             'english': english,
-            'mp3': mp3
+            'mp3': base64.b64encode(mp3)
         }
 
     except Exception as e:
         print(f'ERROR: {e}')
-        return {'error': str(e)}
+        return JSONResponse({'tag': 'error', 'error': str(e)})
 
 
 def analyze_latex(latex) -> Tuple[str, bytes]:

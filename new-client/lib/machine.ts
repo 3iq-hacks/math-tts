@@ -1,11 +1,12 @@
 import { createMachine } from 'xstate';
+import { APIResponse } from './ApiResponse';
 import { ForceNull, PickNonNull, PickNull, PickNullables } from './utils';
 
 export interface Context {
     file: File | null;
     // for type stuff, I'll make thus non nullable
     latex: string | null;
-    error: string | null;
+    response: APIResponse | null;
     dragStatus: DragStatus;
 }
 
@@ -13,16 +14,15 @@ type DragStatus = 'idle' | 'dragging';
 // typescript seems to take the minimal type of the union 
 // for example, PickNull<Context, 'file'> & Context = PickNull<Context, 'file'>
 export type States =
-    | { value: 'NoFile', context: PickNull<Context, 'file' | 'error' | 'latex'> & Context }
-    | { value: 'HasFile', context: PickNullables<Context, 'file', 'latex' | 'error'> & Context }
-    | { value: 'Uploading', context: PickNullables<Context, 'file', 'latex' | 'error'> & Context }
-    | { value: 'Success', context: PickNullables<Context, 'latex', 'file' | 'error'> & Context }
-    | { value: 'Error', context: PickNullables<Context, 'error', 'file' | 'latex'> & Context }
+    | { value: 'NoFile', context: PickNull<Context, 'file' | 'response' | 'latex'> & Context }
+    | { value: 'HasFile', context: PickNullables<Context, 'file', 'latex'> & Context }
+    | { value: 'Uploading', context: PickNullables<Context, 'file', 'latex' | 'response'> & Context }
+    | { value: 'GotResponse', context: PickNullables<Context, 'latex' | 'response', 'file'> & Context }
 
 export type Events =
     | { type: 'PICKFILE'; file: File }
     | { type: 'UPLOAD' }
-    | { type: 'UPLOAD_SUCCESS', latex: string }
+    | { type: 'UPLOAD_RESPONSE', response: APIResponse }
     | { type: 'UPLOAD_ERROR', error: string }
     | { type: 'DRAG_STATUS', status: DragStatus }
 
@@ -35,7 +35,7 @@ export const machine =
         context: {
             file: null,
             latex: null,
-            error: null,
+            response: null,
             dragStatus: 'idle'
         },
         states: {
@@ -55,21 +55,11 @@ export const machine =
 
             Uploading: {
                 on: {
-                    UPLOAD_SUCCESS: { target: 'Success', actions: ['addLatex'] },
-                    UPLOAD_ERROR: { target: 'Error', actions: ['addError'] },
+                    UPLOAD_RESPONSE: { target: 'GotResponse', actions: ['addResponse'] },
+                    UPLOAD_ERROR: { target: 'GotResponse', actions: ['addError'] },
                 },
             },
-
-            Success: {
-                // delete file when we enter into success state
-                entry: ['removeFile'],
-                on: {
-                    PICKFILE: { target: 'HasFile', actions: ['addfile'] },
-                    DRAG_STATUS: { actions: ['setDrag'] },
-                },
-            },
-
-            Error: {
+            GotResponse: {
                 on: {
                     PICKFILE: { target: 'HasFile', actions: ['addfile'] },
                     DRAG_STATUS: { actions: ['setDrag'] },
@@ -88,22 +78,32 @@ export const machine =
                     context.file = event.file;
                 }
             },
-            addLatex: (context, event) => {
-                if (event.type === 'UPLOAD_SUCCESS') {
-                    context.latex = event.latex;
+            setDrag: (context, event) => {
+                if (event.type === 'DRAG_STATUS') {
+                    console.log('DRAG_STATUS MACHINE', event.status);
+                    context.dragStatus = event.status;
                 }
             },
             removeFile: (context, _) => {
+                console.log('REMOVEFILE MACHINE');
                 context.file = null;
             },
-            addError: (context, event) => {
-                if (event.type === 'UPLOAD_ERROR') {
-                    context.error = event.error;
+            // add APIResponse error
+            addResponse: (context, event) => {
+                if (event.type === 'UPLOAD_RESPONSE') {
+                    console.log('UPLOAD_RESPONSE MACHINE', event.response)
+                    context.response = event.response
                 }
             },
-            setDrag: (context, event) => {
-                if (event.type === 'DRAG_STATUS') {
-                    context.dragStatus = event.status;
+            // add any other error message
+            // i could just add this to addResponse, but it's a bit simpler this way
+            addError: (context, event) => {
+                if (event.type === 'UPLOAD_ERROR') {
+                    console.log('UPLOAD_ERROR MACHINE', event.error)
+                    context.response = {
+                        error: event.error,
+                        tag: 'error'
+                    }
                 }
             }
         }

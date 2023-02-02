@@ -15,9 +15,11 @@
     "jest-environment-jsdom": "^29.4.1",
     "next": "latest",
     "react": "18.2.0",
+    "react-audio-player": "^0.17.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.0",
-    "xstate": "^4.35.4"
+    "xstate": "^4.35.4",
+    "zod": "^3.20.2"
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",

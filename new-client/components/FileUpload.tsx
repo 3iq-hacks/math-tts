@@ -3,6 +3,8 @@ import { useXState } from '../lib/StateMachineContext';
 import Image from 'next/image'
 import axios from 'axios';
 import { fileValid } from '../lib/utils';
+import { APIResponse } from '../lib/ApiResponse';
+import ReactAudioPlayer from "react-audio-player";
 
 const DragAndDropInner = () => {
     const { state } = useXState();
@@ -136,8 +138,12 @@ const UploadButton = () => {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/upload-file`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             })
-            console.log(`Response data is: ${response.data}`);
-            send({ type: 'UPLOAD_SUCCESS', latex: response.data.latex })
+            const parsedResponse = APIResponse.parse(response.data)
+            if (parsedResponse.tag === 'error') {
+                send({ type: 'UPLOAD_ERROR', error: parsedResponse.error })
+            } else {
+                send({ type: 'UPLOAD_RESPONSE', response: parsedResponse })
+            }
         } catch (error) {
             console.log(error);
             send({ type: 'UPLOAD_ERROR', error: String(error) })
@@ -172,15 +178,30 @@ const UploadButton = () => {
     )
 }
 
-const DisplayError = () => {
+const DisplayResponse = () => {
     const { state } = useXState();
 
-    if (state.matches('Error')) {
+    if (state.matches('GotResponse')) {
+        const response = state.context.response;
+
+        if (response.tag === 'error') {
+            return (
+                <div className="flex flex-col items-center justify-center w-full p-4 space-y-1">
+                    <p className="text-xl text-red-500">Error uploading file!</p>
+                    <p className="text-sm font-light text-slate-400">{response.error}</p>
+                    <p className="text-sm font-light text-slate-50">Please check the console for more information!</p>
+                </div>
+            )
+        }
+
+        // success!
+        // show latex, english, and mp3 file (which is represented in base64)
         return (
             <div className="flex flex-col items-center justify-center w-full p-4 space-y-1">
-                <p className="text-xl text-red-500">Error uploading file!</p>
-                <p className="text-sm font-light text-slate-400">{state.context.error}</p>
-                <p className="text-sm font-light text-slate-50">Please check the console for more information!</p>
+                <p className="text-xl text-green-500">File uploaded successfully!</p>
+                <p className="text-sm font-light text-slate-400">Latex: {response.latex}</p>
+                <p className="text-sm font-light text-slate-400">English: {response.english}</p>
+                <ReactAudioPlayer src={response.mp3} controls />
             </div>
         )
     }
@@ -193,7 +214,7 @@ const FileUpload: React.FC = () => {
         <div className="flex items-center justify-center w-full flex-col space-y-6">
             <DragAndDropSection />
             <UploadButton />
-            <DisplayError />
+            <DisplayResponse />
         </div>
     )
 }
