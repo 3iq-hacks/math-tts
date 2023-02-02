@@ -4,13 +4,34 @@ By Aneeljyot Alagh, Curtis Kan, Joshua Ji, Kailash Seshandri, Shehraj Singh, and
 
 This project uses React for the frontend, and Flask for the backend. We use OCR tools for LaTeX image processing, and Google Cloud Platform for deployment and hosting. We use ```ANTLR4``` to build our own ```lexer``` and ```parser``` to convert latex to english which built on the top of existing latex to sympy project. 
 
-## Running
+## Running Locally
 
-The simplest way to get started with the project is to open it up using Devcontainers, or using Github Codespaces. After that, run the following:
+### Environment Variables
+
+There are a few secrets we need to run the project.
+
+#### Client
+
+In `client/.env.local`, add the following:
+
+```
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+
+#### Server
+
+In `server/service_account_key.json`, add the Google Cloud Service Account JSON file. Inside the Cloud Console, this is the service account "text-too-speech@theta-carving-374101.iam.gserviceaccount.com". 
+
+For those who want to use their own service account, we created this service account with the "Browser" role.
+
+### Running the project
+
+The simplest way to get started with the project is to open it up using Devcontainers, or using Github Codespaces. After that, assuming you have the environment variables and secrets reaady, run the following:
 
 ```bash
 concurrently "cd client && npm run dev" "cd server && uvicorn main:app --reload"
 ```
+
 
 The client will open on [http://localhost:3000](http://localhost:3000), while the server can be accessed at [http://localhost:8000](http://localhost:8000)
 
