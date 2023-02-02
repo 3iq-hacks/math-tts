@@ -18,8 +18,8 @@ jobs:
           node-version: "16.x"
 
       - name: Install ⬇️
-        run: cd client && npm ci 
-      
+        run: cd client && npm ci
+
       - name: Build 🏗️
         run: cd client && CI=false npm run build
 
@@ -27,11 +27,3 @@ jobs:
         run: |
           touch client/.env
           echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" > client/.env
-
-      - name: Deploy to Firebase 🚀
-        uses: w9jds/firebase-action@v11.18.0  
-        with:
-          args: deploy --only hosting
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          PROJECT_PATH: ./client

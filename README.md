@@ -9,19 +9,28 @@ This project uses React for the frontend, and Flask for the backend. We use OCR 
 The simplest way to get started with the project is to open it up using Devcontainers, or using Github Codespaces. After that, run the following:
 
 ```bash
-concurrently "cd client && npm run start" "cd server && uvicorn main:app --reload"
+concurrently "cd client && npm run dev" "cd server && uvicorn main:app --reload"
 ```
 
 The client will open on [http://localhost:3000](http://localhost:3000), while the server can be accessed at [http://localhost:8000](http://localhost:8000)
 
-## Libraries Used
+## Tools Used
 
 ### Frontend
-- [React-bootstrap](https://react-bootstrap.github.io/) for styling.
+
+- [Tailwind](https://tailwindcss.com/) for styling.
+- [XState](https://xstate.js.org/) for state management.
 - [React-audio-player](https://www.npmjs.com/package/react-audio-player) for the website audio player.
 - [Axios](https://www.npmjs.com/package/axios) for HTTP requests.
+- [React-Toastify](https://www.npmjs.com/package/react-toastify) for toast notifications.
+
 ### Backend
 
+- [FastAPI](https://fastapi.tiangolo.com/) for the backend.
+- [pix2tex](https://pypi.org/project/pix2tex/) for LaTeX OCR.
+- [(A fork of) Latex2Sympy](https://github.com/3iq-hacks/latex2sympy) to parse LaTeX and convert it to English
+- [ANTLR4](https://www.antlr.org/) to build our own lexer and parser for LaTeX
+- [Google Cloud Text-to-Speech](https://cloud.google.com/text-to-speech) for converting English to speech.
 
 ## Pictures/gifs References
 - [LaTeX Logo](https://brandslogos.com/wp-content/uploads/images/latex-logo-vector.svg)
