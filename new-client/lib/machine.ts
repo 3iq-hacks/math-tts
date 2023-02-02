@@ -10,7 +10,6 @@ export interface Context {
 }
 
 type DragStatus = 'idle' | 'dragging';
-
 // typescript seems to take the minimal type of the union 
 // for example, PickNull<Context, 'file'> & Context = PickNull<Context, 'file'>
 export type States =

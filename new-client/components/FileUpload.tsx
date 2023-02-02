@@ -128,16 +128,15 @@ const UploadButton = () => {
             // also by this point, the state.context.file is not null!
             // xstate knows the state has to be HasFile, which has a non-null file
             const file = state.context.file;
-            console.log('Uploading file...', file);
             const formData = new FormData();
             formData.append('file', file);
-            console.log(formData.get('file'));
+            console.log('Uploading file...', formData.get('file'));
             send('UPLOAD')
 
             const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/upload-file`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             })
-            console.log(`Latex is: ${response.data.latex}`);
+            console.log(`Response data is: ${response.data}`);
             send({ type: 'UPLOAD_SUCCESS', latex: response.data.latex })
         } catch (error) {
             console.log(error);
