@@ -18,6 +18,11 @@ import base64
 # get port from environment variable, 8000 if not set
 port = os.environ.get('PORT', 8000)
 
+# Inside Cloud Run, the service account key is stored in the environment variable automatically
+# but locally, we need to set it manually
+if os.environ.get('GOOGLE_APPLICATION_CREDENTIALS') is None:
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service_account_key.json"
+
 app = FastAPI(port=port)
 
 allowed_origins = [
