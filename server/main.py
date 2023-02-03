@@ -105,12 +105,9 @@ def analyze_latex(latex) -> Tuple[str, bytes]:
     as well as a TTS reading of the english
     '''
     # now, convert latex to english
-    print(f'  Converting latex to english...')
     english = latex2sympyStr(latex)
     print(f'  Converted latex to english: {english}')
 
     # now run TTS to generate mp3
-    print(f'  Generating mp3...')
     mp3 = tts.generate_mp3(english)
-
     return {english, mp3}
