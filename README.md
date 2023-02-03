@@ -29,7 +29,7 @@ For those who want to use their own service account, we created this service acc
 The simplest way to get started with the project is to open it up using Devcontainers, or using Github Codespaces. After that, assuming you have the environment variables and secrets reaady, run the following:
 
 ```bash
-concurrently "cd client && npm run dev" "cd server && uvicorn main:app --reload"
+concurrently "cd client && npm run dev" "cd server && RUN_ENV=dev uvicorn main:app --reload"
 ```
 
 

@@ -38,11 +38,17 @@ async def startup_event():
 
     # Inside Cloud Run, the service account key is stored in the environment variable automatically
     # but locally, we need to set it manually
-    if os.environ.get('GOOGLE_APPLICATION_CREDENTIALS') is None:
-        print('Setting GOOGLE_APPLICATION_CREDENTIALS manually...')
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service_account_key.json"
-    else:
-        print('GOOGLE_APPLICATION_CREDENTIALS already set')
+    if os.environ.get('RUN_ENV') is None:
+        # production server, do nothing
+        # Google cloud will search for credentials itself
+        # https://cloud.google.com/docs/authentication/application-default-credentials
+        print('Production server, do nothing')
+    elif os.environ.get('RUN_ENV') == 'dev':
+        if os.environ.get('GOOGLE_APPLICATION_CREDENTIALS') is None:
+            print('Setting GOOGLE_APPLICATION_CREDENTIALS manually...')
+            os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service_account_key.json"
+        else:
+            print('GOOGLE_APPLICATION_CREDENTIALS already set')
 
 
 @app.get("/")

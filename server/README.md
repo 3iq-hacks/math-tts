@@ -6,7 +6,7 @@ The server serves as a gateway to all the services that the frontend needs to ac
 
 ```bash
 cd server
-uvicorn main:app --reload
+RUN_ENV=dev uvicorn main:app --reload
 ```
 
 The app will be available on [localhost:8000](localhost:8000).
