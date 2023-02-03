@@ -4,7 +4,6 @@ import Image from 'next/image'
 import axios from 'axios';
 import { fileValid } from '../lib/utils';
 import { APIResponse } from '../lib/ApiResponse';
-import ReactAudioPlayer from "react-audio-player";
 
 const DragAndDropInner = () => {
     const { state } = useXState();
@@ -12,6 +11,19 @@ const DragAndDropInner = () => {
     // there are lots of states where we'll have the file, so we just check if the file is non null
     if (state.context.file) {
         // show file image
+        const file = state.context.file;
+        const extension = file.name.split('.').pop()
+        console.log('Extension: ', extension)
+
+        if (extension && extension === 'tex') {
+            return (
+                <>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 mb-3 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    <p className="text-xl font-light text-slate-50">{file.name}</p>
+                </>
+            )
+        }
+
         return (
             <div className="flex flex-col items-center justify-center pt-5 pb-6 w-full p-4 space-y-2">
                 <div className='relative w-full h-32'>
@@ -80,7 +92,9 @@ const DragAndDropSection = () => {
         send({ type: 'DRAG_STATUS', status: 'idle' });
         if (e.dataTransfer.files && e.dataTransfer.files[0]) {
             const file = e.dataTransfer.files[0];
-            if (fileValid(file, ['image/png', 'image/jpeg', 'image/jpg', 'text/x-tex'])) {
+            // fileValid takes in a list of mime types OR file extensions
+            // somehow, the mime type for tex files (text/latex) is not working by drag and drop
+            if (fileValid(file, ['image/png', 'image/jpeg', 'image/jpg', 'tex'])) {
                 send({ type: 'PICKFILE', file });
             } else {
                 toast.error('Unsupported file type');
@@ -104,7 +118,7 @@ const DragAndDropSection = () => {
             <input
                 id="dropzone-file"
                 type="file"
-                accept="image/png, image/jpeg, image/jpg, .tex"
+                accept="image/png, image/jpeg, image/jpg,.tex"
                 className="hidden"
                 onChange={insertFile} />
         </label>

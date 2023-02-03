@@ -80,7 +80,6 @@ export const machine =
             },
             setDrag: (context, event) => {
                 if (event.type === 'DRAG_STATUS') {
-                    console.log('DRAG_STATUS MACHINE', event.status);
                     context.dragStatus = event.status;
                 }
             },

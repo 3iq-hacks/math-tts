@@ -9,7 +9,8 @@ export const fileValid = (file: File, allowedTypes: string[]): boolean => {
     if (!file) {
         return false;
     }
-    if (!allowedTypes.includes(file.type)) {
+    const extension = file.name.split('.').pop() || '';
+    if (!allowedTypes.includes(file.type) && !allowedTypes.includes(extension)) {
         return false;
     }
     return true;
