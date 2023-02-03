@@ -25,10 +25,7 @@ if os.environ.get('GOOGLE_APPLICATION_CREDENTIALS') is None:
 
 app = FastAPI(port=port)
 
-allowed_origins = [
-    "http://localhost",
-    "http://localhost:3000",
-]
+allowed_origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
