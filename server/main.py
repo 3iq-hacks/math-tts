@@ -18,11 +18,6 @@ import base64
 # get port from environment variable, 8000 if not set
 port = os.environ.get('PORT', 8000)
 
-# Inside Cloud Run, the service account key is stored in the environment variable automatically
-# but locally, we need to set it manually
-if os.environ.get('GOOGLE_APPLICATION_CREDENTIALS') is None:
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service_account_key.json"
-
 app = FastAPI(port=port)
 
 allowed_origins = ["*"]
@@ -34,6 +29,20 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
+
+
+@app.on_event("startup")
+async def startup_event():
+    print('Starting up...')
+    await pix2tex.load_model()
+
+    # Inside Cloud Run, the service account key is stored in the environment variable automatically
+    # but locally, we need to set it manually
+    if os.environ.get('GOOGLE_APPLICATION_CREDENTIALS') is None:
+        print('Setting GOOGLE_APPLICATION_CREDENTIALS manually...')
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service_account_key.json"
+    else:
+        print('GOOGLE_APPLICATION_CREDENTIALS already set')
 
 
 @app.get("/")
@@ -57,7 +66,6 @@ async def upload_file(file: UploadFile = File(...)):
         # if it is, read latex and set curr_latex
         if util.allowed_file(file.filename):
             print(f'  Reading latex from img...')
-            await pix2tex.load_model()
             latex = await pix2tex.predict(file)
             curr_latex = f'$${latex}$$'
             print(f'  Read latex from png img: {curr_latex}')
